@@ -7,8 +7,12 @@ router.get('/', function(req, res) {
 });
 
 // GET /user/view
-router.get('/view', function(req, res) {
-  res.send('user view here...');
+router.get('/create', function(req, res) {
+  var viewModel = {
+    title: 'Create an account'
+  };
+  
+  res.render('users/create', viewModel);
 });
 
 module.exports = router;
