@@ -7,10 +7,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
+var mongoose = require('mongoose');
 
+var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
-const orders = require('./routes/orders');
+var orders = require('./routes/orders');
+
+mongoose.connect(config.mongoUri);
 
 var app = express();
 
@@ -19,7 +23,6 @@ app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
 // view engine setup
-
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',
   partialsDir: ['views/partials/']
