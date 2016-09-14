@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var userService = require('../services/user-service');
 
 // schema for a user
 var userSchema = new Schema({
@@ -13,6 +14,16 @@ var userSchema = new Schema({
     default: Date.now
   }
 });
+
+userSchema.path('email').validate(function (value, next) {
+  userService.findUser(value, function (err, user) {
+    if (err) {
+      console.log(err);
+      return next(false);
+    }
+    next(!user);
+  });
+}, 'That email is already in use');
 
 // constructor based on user schema
 var User = mongoose.model('User', userSchema);
