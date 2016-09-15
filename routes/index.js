@@ -4,7 +4,10 @@ var router = express.Router();
 /* GET home page. */
 
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Welcome to the Lambda Hotel' });
+  if (req.user) {
+    return res.redirect('/orders');
+  }
+  res.render('index', {title: "Login"});
 });
 
 module.exports = router;
