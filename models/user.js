@@ -6,7 +6,7 @@ var userService = require('../services/user-service');
 var userSchema = new Schema({
   firstName: String,
   lastName: String,
-  roomNumber: Number,
+  roomNumber: {type: Number, min: [100, ""]},
   email: String,
   password: String,
   create: {
