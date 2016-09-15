@@ -8,11 +8,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var expressSession = require('express-session');
 
 var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
+
+var passportConfig = require('./auth/passport-config');
+passportConfig();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoUri);
@@ -39,6 +44,15 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(expressSession({
+  secret: 'getting hungry',
+  saveUninitialized: false,
+  resave: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
