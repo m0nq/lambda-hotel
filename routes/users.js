@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
 var userService = require('../services/user-service');
 
 /* GET users listing. */
@@ -26,11 +27,21 @@ router.post('/create', function(req, res) {
         error: err.errors.email
       };
       delete viewModel.input.passsword;
-      // return res.send(err.errors);
       return res.render('users/create', viewModel);
     }
-    res.redirect('/orders');
+    req.login(req.body, function (err) {
+      res.redirect('/orders');
+    });
   });
+});
+
+router.post('/login', passport.authenticate('local'), function (req, res, next) {
+  res.redirect('/orders');
+});
+
+router.get('/logout', function (req, res, next) {
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = router;
