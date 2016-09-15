@@ -4,11 +4,11 @@ var userService = require('../services/user-service');
 
 // schema for a user
 var userSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  roomNumber: {type: Number, min: [100, ""]},
-  email: String,
-  password: String,
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
+  roomNumber: {type: Number, required: true, min: [0, "That's not a valid room number"], max: [500, "That's not a valid room number"]},
+  email: {type: String, required: true},
+  password: {type: String, required: true},
   create: {
     type: Date,
     default: Date.now
@@ -23,7 +23,7 @@ userSchema.path('email').validate(function (value, next) {
     }
     next(!user);
   });
-}, 'That email is already in use');
+}, "There's already an account using that email. Try logging in?");
 
 // constructor based on user schema
 var User = mongoose.model('User', userSchema);

@@ -23,9 +23,10 @@ router.post('/create', function(req, res) {
       var viewModel = {
         title: 'Create an account',
         input: req.body,
-        error: err.errors.email.message
+        error: err.errors.email
       };
       delete viewModel.input.passsword;
+      // return res.send(err.errors);
       return res.render('users/create', viewModel);
     }
     res.redirect('/orders');
